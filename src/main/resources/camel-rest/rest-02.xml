@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rests xmlns="http://camel.apache.org/schema/spring">
+    <rest path="/decide/">
+        <post uri="/" >
+            <route>
+                <transform>
+                    <groovy>
+                        <![CDATA[
+                            def applicant = request.body.applicant
+
+                            // Simple JSON to Map object mapping
+
+                            [
+                                "department": applicant.department,
+                                "age": applicant.age,
+                                "income": applicant.income
+                            ]
+                        ]]>
+                    </groovy>
+                </transform>
+
+                <bean beanType="com.spike.springcamel.JpmmlEvaluator"
+                      method="evaluate(scorecard)" />
+            </route>
+        </post>
+    </rest>
+</rests>
